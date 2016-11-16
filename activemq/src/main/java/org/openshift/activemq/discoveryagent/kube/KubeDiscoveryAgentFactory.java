@@ -40,10 +40,11 @@ public class KubeDiscoveryAgentFactory extends DiscoveryAgentFactory {
         try {
             LOGGER.info("Creating Kubernetes discovery agent for {}.", uri.toString());
             final Map<String, String> options = URISupport.parseParameters(uri);
+            LOGGER.info("URI parameter options: " + options);
             uri = URISupport.removeQuery(uri);
-            final OpenShiftDiscoveryAgent agent = new OpenShiftDiscoveryAgent(new KubePeerAddressResolver(
-                    uri.getHost(), uri.getPort()));
+            final OpenShiftDiscoveryAgent agent = new OpenShiftDiscoveryAgent(new KubePeerAddressResolver(uri.getHost(), uri.getPort()));
             IntrospectionSupport.setProperties(agent, options);
+            LOGGER.info("Agent query interval: " + agent.getQueryInterval());
             return agent;
         } catch (Throwable e) {
             throw IOExceptionSupport.create("Could not create discovery agent: " + uri, e);
